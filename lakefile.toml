@@ -1,0 +1,10 @@
+name = "pl_theories"
+version = "0.1.0"
+defaultTargets = ["pl_theories"]
+
+[[lean_lib]]
+name = "PlTheories"
+
+[[lean_exe]]
+name = "pl_theories"
+root = "Main"
