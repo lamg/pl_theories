@@ -30,9 +30,15 @@ def choice (x y : Parser α) : Parser α :=
   fun input result rest =>
     x input result rest ∨ y input result rest
 
-infixl:50 " <|> " => choice
-example: ((tk "ok") <|> (tk "bla")) ["ok"] "ok" [] := by decide
-example: ((tk "bla") <|> (tk "bla")) ["bla"] "bla" [] := by decide
+instance : OrElse (Parser α) where
+  orElse p q := choice p (q ())
+
+example: ((tk "ok") <|> (tk "bla")) ["ok"] "ok" [] := by
+  show choice (tk "ok") (tk "bla") ["ok"] "ok" []
+  decide
+example: ((tk "bla") <|> (tk "bla")) ["bla"] "bla" [] := by
+  show choice (tk "bla") (tk "bla") ["bla"] "bla" []
+  decide
 
 @[reducible]
 def seq (p: Parser α) (q: Parser β): Parser (α × β) :=
