@@ -1,3 +1,5 @@
+namespace Parsing
+
 abbrev Parser (α: Type) := List String → α → List String → Prop
 
 @[reducible]
@@ -120,3 +122,5 @@ infixl:60 " *> " => right
 
 example: (digits *> alpha) ["12", "bla"] "bla" [] := by
   simp [right, digits, guardp, alpha, all_digits, all_alpha]
+
+end Parsing

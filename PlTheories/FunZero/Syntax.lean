@@ -1,4 +1,7 @@
 import PlTheories.Parsing
+open Parsing
+
+namespace Syntax
 
 def lparen_token : String := "("
 def rparen_token : String := ")"
@@ -190,3 +193,5 @@ example: expression ["(", "x", ",", "y", ")"]
     expression, tuple_parser, var_parser, map, identifier, guardp,
     lparen, comma, rparen, lparen_token, comma_token, rparen_token, tk]
   exists [",", "y", ")"]
+
+end Syntax
