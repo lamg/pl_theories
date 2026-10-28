@@ -1,11 +1,18 @@
 # Programming Language Theories
 
-[![CI](https://github.com/lamg/pl_theories/actions/workflows/lean_action_ci.yml/badge.svg)](https://github.com/lamg/pl_theories/actions/workflows/lean_action_ci.yml)
-[![Lean](https://img.shields.io/badge/Lean-v4.35.0-blue.svg)](https://lean-lang.org/)
-[![License](https://img.shields.io/badge/License-Apache--2.0-blue.svg)](LICENSE)
+[![CI][CI Shield]][CI Actions]
+[![Lean][Lean Shield]][Lean Site]
+[![License][License Shield]][License File]
 
 Small ML-like language being specified and implemented in Lean, with focus on theories for:
 
 - [ ] syntax parsing
 - [ ] type checking (Algorithm W)
 - [ ] semantics (Big Step)
+
+[CI Actions]: https://github.com/lamg/pl_theories/actions/workflows/lean_action_ci.yml
+[CI Shield]: https://img.shields.io/github/actions/workflow/status/lamg/pl_theories/lean_action_ci.yml?style=flat-square&label=CI
+[Lean Site]: https://lean-lang.org/
+[Lean Shield]: https://img.shields.io/badge/Lean-v4.35.0-blue?style=flat-square
+[License File]: LICENSE
+[License Shield]: https://img.shields.io/badge/License-Apache--2.0-blue?style=flat-square
