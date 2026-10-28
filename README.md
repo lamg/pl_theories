@@ -1,8 +1,8 @@
 # Programming Language Theories
 
-[![CI][CI Shield]][CI Actions]
 [![Lean][Lean Shield]][Lean Site]
 [![License][License Shield]][License File]
+[![CI][CI Shield]][CI Actions]
 
 Small ML-like language being specified and implemented in Lean, with focus on theories for:
 
