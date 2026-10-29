@@ -5,6 +5,7 @@ namespace RecursiveDescent
 inductive ParseError where
   | unexpectedToken (expected : String) (found : String)
   | unexpectedEnd (expected : String)
+  | expectingOneOf (choice₀ choice₁ : ParseError)
   | alwaysFails
 deriving DecidableEq, Repr
 
@@ -76,6 +77,71 @@ def fail : RdParser α :=
 theorem fail_spec_ok (input rest: List String) (result: α):
   fail input = .ok (result, rest) ↔ Parsing.fail input result rest
 := by
-  simp [fail, Parsing.fail]
+  simp [fail]
+
+def choice (p q: RdParser α): RdParser α :=
+  fun input =>
+    match p input with
+    | .ok (r, rest) => .ok (r,rest)
+    | .error e =>
+      match q input with
+      | .ok (r, rest) => .ok (r, rest)
+      | .error f =>
+        .error (.expectingOneOf e f)
+
+-- FollowsSpec defines the correspondence between parser
+-- implementation and specification
+def FollowsSpec (impl: RdParser α) (spec: Parsing.Parser α) : Prop :=
+  ∀ input result rest,
+    impl input = .ok (result, rest) ↔ spec input result rest
+
+example (x : α) : FollowsSpec (pure x) (Parsing.pure x) :=
+  pure_spec_ok x
+
+theorem first_choice_spec_ok (hp: FollowsSpec p P) (hq: FollowsSpec q Q):
+  FollowsSpec (choice p q) (Parsing.first_choice P Q)
+:= by
+  intro input result rest
+  constructor
+  · simp [choice]
+    cases hip: p input with
+    | ok res =>
+      simp
+      intro res_fst res_snd
+      simp [Parsing.first_choice]
+      left
+      rw [<-hp, hip, <-res_fst, <-res_snd]
+    | error e =>
+      simp
+      cases hiq: q input with
+      | ok res =>
+        simp
+        intro res_fst res_snd
+        simp [Parsing.first_choice]
+        right
+        constructor
+        · intro x x_1
+          rw [<-hp, hip]
+          simp
+        · rw [<-hq, hiq, <-res_fst, <-res_snd]
+      | error e => simp
+  · intro h_fst_choice
+    simp [choice]
+    cases hip: p input with
+    | ok res =>
+      simp
+      sorry
+    | error e =>
+      simp
+      cases hiq : q input with
+      | ok res => simp; sorry
+      | error e => sorry
+
+
+
+
+
+
+
 
 end RecursiveDescent

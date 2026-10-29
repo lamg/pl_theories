@@ -32,6 +32,21 @@ def choice (x y : Parser α) : Parser α :=
   fun input result rest =>
     x input result rest ∨ y input result rest
 
+@[reducible]
+def first_choice (x y : Parser α) : Parser α :=
+  fun input result rest =>
+    x input result rest ∨
+      ((¬ ∃ r s, x input r s) ∧ y input result rest)
+
+example: (first_choice (tk "bla") (tk "ok")) ["ok"] "ok" [] := by
+  simp [first_choice, tk]
+
+example: (first_choice (pure 1) (pure 2)) [] 1 [] := by
+  simp [first_choice, pure]
+
+example: ¬ (first_choice (pure 1) (pure 2)) [] 2 [] := by
+  simp [first_choice, pure]
+
 instance : OrElse (Parser α) where
   orElse p q := choice p (q ())
 
