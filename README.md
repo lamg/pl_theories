@@ -29,7 +29,10 @@ python3 -m http.server 8000 --directory .lake/build/literate-html
 
 Open <http://localhost:8000/>. The first site build compiles Verso and can
 take several minutes. `literate.toml` controls the chapter order, page titles,
-and rendering of explanatory docstrings as prose.
+and rendering of explanatory docstrings as prose. `styles/reading.css` supplies
+the device-aware light/dark reading theme. When changing only CSS locally,
+remove `.lake/build/literate-html.trace` before rebuilding; deployment does
+this automatically because Verso 4.35 does not track extra CSS contents.
 
 ## Publishing
 

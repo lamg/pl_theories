@@ -1,3 +1,4 @@
+extra_css = ["styles/reading.css"]
 landing_page = "PlTheories"
 exclude = ["PlTheories.FunZero.Typechecking"]
 docstrings_as_text = true

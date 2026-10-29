@@ -46,6 +46,8 @@ jobs:
             - name: Build literate site
               id: build
               run: |
+                  # Verso 4.35 does not track extra_css contents in its HTML cache.
+                  rm -f .lake/build/literate-html.trace
                   site_path=$(lake query :literateHtml)
                   test -f "$site_path/index.html"
                   echo "path=$site_path" >> "$GITHUB_OUTPUT"

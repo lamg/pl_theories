@@ -1,0 +1,175 @@
+/* Reading theme. Loaded after Verso's defaults; follows the OS without JavaScript. */
+:root {
+  color-scheme: light dark;
+  --verso-text-font-family: "Iowan Old Style", "Palatino Linotype", "Book Antiqua", Palatino, Georgia, serif;
+  --verso-structure-font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+  --verso-code-font-family: "DejaVu Sans Mono", "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+  --verso-background-color: #faf9f6;
+  --verso-surface-color: #f2f0eb;
+  --verso-text-color: #292c30;
+  --verso-structure-color: #343b43;
+  --verso-muted-color: #626870;
+  --verso-border-color: #d8d6cf;
+  --verso-link-color: #245d86;
+  --verso-link-visited-color: #655080;
+  --verso-link-hover-bg: #e6edf1;
+  --verso-current-bg: #e0e8ed;
+  --verso-current-fg: #203f56;
+  --verso-breadcrumb-color: var(--verso-muted-color);
+  --verso-code-box-background-color: #f0efeb;
+  --verso-code-box-border-color: #d8d6cf;
+  --verso-code-color: #292c30;
+  --verso-code-keyword-color: #75406f;
+  --verso-code-const-color: #245d86;
+  --verso-code-var-color: #35624c;
+  --verso-code-var-style: normal;
+  --verso-code-hover-bg-color: #dce5eb;
+  --verso-inline-code-bg: #eceae4;
+  --verso-selected-color: #dce5eb;
+  --verso-tooltip-color: var(--verso-code-color);
+  --verso-tooltip-bg-color: #f7f6f2;
+  --verso-tooltip-border-color: #939a9e;
+  --verso-tooltip-separator-color: var(--verso-border-color);
+  --verso-tactic-state-color: var(--verso-code-color);
+  --verso-tactic-state-bg-color: var(--verso-tooltip-bg-color);
+  --verso-tactic-state-border-color: var(--verso-tooltip-border-color);
+  --verso-tactic-toggle-color: #707780;
+  --verso-tactic-toggle-checked-color: #245d86;
+  --verso-imports-summary-color: var(--verso-muted-color);
+  --verso-output-color: var(--verso-code-color);
+  --verso-blockquote-color: var(--verso-muted-color);
+  --verso-blockquote-border-color: var(--verso-border-color);
+  --verso-copy-button-bg: var(--verso-surface-color);
+  --verso-copy-button-color: var(--verso-muted-color);
+  --verso-copy-button-border: var(--verso-border-color);
+  --verso-copy-button-hover-bg: var(--verso-code-hover-bg-color);
+  --verso-hamburger-bg: var(--verso-surface-color);
+  --verso-hamburger-border: var(--verso-border-color);
+  --verso-hamburger-bar-color: var(--verso-text-color);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --verso-background-color: #1c2025;
+    --verso-surface-color: #22272d;
+    --verso-text-color: #e2dfd7;
+    --verso-structure-color: #dededb;
+    --verso-muted-color: #a8adb3;
+    --verso-border-color: #424950;
+    --verso-link-color: #9bc6e5;
+    --verso-link-visited-color: #c4b1dd;
+    --verso-link-hover-bg: #303d48;
+    --verso-current-bg: #303d48;
+    --verso-current-fg: #d9e9f4;
+    --verso-code-box-background-color: #24292f;
+    --verso-code-box-border-color: #424950;
+    --verso-code-color: #e2dfd7;
+    --verso-code-keyword-color: #d8acd4;
+    --verso-code-const-color: #9bc6e5;
+    --verso-code-var-color: #add0b6;
+    --verso-code-hover-bg-color: #394651;
+    --verso-inline-code-bg: #2b3138;
+    --verso-selected-color: #394651;
+    --verso-tooltip-bg-color: #2b3138;
+    --verso-tooltip-border-color: #77818b;
+    --verso-tactic-toggle-color: #a8adb3;
+    --verso-tactic-toggle-checked-color: #9bc6e5;
+  }
+}
+
+/* Preserve Verso's scrollable navigation and mobile menu; center the article. */
+.main-area, .content-wrapper, .code-content { min-width: 0; }
+.sidebar { width: 16rem; }
+.module-tree, .breadcrumbs { font-family: var(--verso-structure-font-family); }
+.module-tree { line-height: 1.65; }
+.module-tree .leaf, .module-tree summary { padding-block: .4rem; }
+.title-bar { padding-block: .7rem; }
+.page-toc { width: 12rem; font-family: var(--verso-structure-font-family); }
+.code-content { padding: 3rem clamp(1.25rem, 4vw, 5rem) 6rem; }
+.code-content > * { max-width: 46rem; margin-inline: auto; }
+.code-content > :is(.md-text.mod-doc, .verso-text.mod-doc) {
+  max-width: 46rem;
+  font-size: 1.125rem;
+  line-height: 1.85;
+  margin-bottom: 1.8rem;
+  overflow-wrap: break-word;
+}
+.code-content > :is(.md-text.mod-doc, .verso-text.mod-doc) :is(p, ul, ol, blockquote) {
+  margin-bottom: 1.1em;
+}
+.code-content > :is(.md-text.mod-doc, .verso-text.mod-doc) h1 {
+  font-family: var(--verso-text-font-family);
+  font-size: clamp(2rem, 3vw, 2.7rem);
+  font-weight: 500;
+  line-height: 1.2;
+  letter-spacing: -.025em;
+  border: 0;
+  margin: .4rem 0 1.6rem;
+  padding: 0;
+  text-wrap: balance;
+}
+.code-content > :is(.md-text.mod-doc, .verso-text.mod-doc) :is(h2, h3) {
+  font-family: var(--verso-text-font-family);
+  line-height: 1.3;
+  margin-top: 2.2rem;
+  margin-bottom: 1rem;
+}
+.code-content > :is(.md-text.mod-doc, .verso-text.mod-doc) a {
+  text-underline-offset: .18em;
+}
+.code-content > :is(.md-text.mod-doc, .verso-text.mod-doc) code { font-size: .83em; }
+.code-box {
+  padding: 1.25rem 1.4rem;
+  margin-bottom: 2.25rem;
+  border-radius: .2rem;
+  font-size: .875rem;
+  line-height: 1.7;
+  color: var(--verso-code-color);
+}
+.hl.lean, .hl.lean a { color: var(--verso-code-color); }
+.hl.lean.popup {
+  color: var(--verso-tooltip-color);
+  background: var(--verso-tooltip-bg-color);
+}
+.hl.lean .hover-info.messages > :is(code.error, code.warning, code.information) {
+  background: var(--verso-tooltip-bg-color);
+}
+.imports-list { font-family: var(--verso-structure-font-family); }
+/* Keep mathematical layout and fonts supplied by KaTeX, with room for fractions. */
+.katex { color: var(--verso-text-color); font-size: 1.08em; }
+.katex-display {
+  margin: 1.8em 0;
+  padding: .4em 0;
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+@media (max-width: 1100px) { .page-toc { display: none; } }
+@media (max-width: 768px) {
+  .sidebar { width: 280px; left: -280px; }
+  .code-content { padding: 1.6rem 1.1rem 4rem; }
+  .code-content > :is(.md-text.mod-doc, .verso-text.mod-doc) { font-size: 1.0625rem; line-height: 1.75; }
+  .code-box { padding: 1rem; font-size: .8125rem; }
+}
+@media print {
+  :root { color-scheme: light; }
+  body, .layout, .main-area, .content-wrapper, .code-content { height: auto; overflow: visible; display: block; }
+  body, .code-content, .code-box { background: white; color: black; }
+  .sidebar, .title-bar, .page-toc, .hamburger, .copy-button, .imports-list { display: none; }
+  .code-content { padding: 0; }
+  .code-box { white-space: pre-wrap; break-inside: avoid; }
+  .hl.lean, .hl.lean * { color: black !important; }
+  .code-content > :is(.md-text.mod-doc, .verso-text.mod-doc) { font-size: 11pt; }
+}
+
+/* Keep search in normal flow so it never covers the chapter breadcrumb. */
+.title-bar { display: grid; grid-template-columns: minmax(0, 1fr) minmax(10rem, 18rem); gap: 1rem; align-items: center; }
+.title-bar #search-wrapper { position: relative; width: 100%; padding: 0; }
+.title-bar #search-wrapper .combobox-list,
+.title-bar #search-wrapper .combobox .cb_edit,
+.title-bar #search-wrapper ul[role="listbox"] { width: 100%; }
+.hl.lean { font-family: var(--verso-code-font-family); }
+@media (max-width: 1000px) {
+  .title-bar { grid-template-columns: minmax(0, 1fr); gap: .5rem; }
+  .title-bar #search-wrapper { max-width: 24rem; }
+}
+@media print { .title-bar { display: none; } }
