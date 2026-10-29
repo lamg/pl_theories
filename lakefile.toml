@@ -8,3 +8,8 @@ name = "PlTheories"
 [[lean_exe]]
 name = "pl_theories"
 root = "Main"
+
+[[require]]
+name = "verso"
+git = "https://github.com/leanprover/verso.git"
+rev = "v4.35.0"
