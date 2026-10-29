@@ -137,11 +137,38 @@ theorem first_choice_spec_ok (hp: FollowsSpec p P) (hq: FollowsSpec q Q):
       | ok res => simp; simpa [Parsing.first_choice, ← hp input, ← hq input, hip, hiq, Prod.ext_iff] using h_fst_choice
       | error e => simp [Parsing.first_choice, ← hp input, ← hq input, hip, hiq] at h_fst_choice
 
+def seq (p: RdParser α) (q: RdParser β): RdParser (α × β) :=
+  fun input =>
+    match p input with
+    | .ok (rp, rest_p) =>
+      match q rest_p with
+      | .ok (rq, rest_q) => .ok ((rp, rq), rest_q)
+      | .error eq => .error eq
+    | .error eq => .error eq
 
 
-
-
-
+theorem seq_spec_ok (hp: FollowsSpec p P) (hq: FollowsSpec q Q):
+  ∀ input r rest,
+    seq p q input = .ok (r, rest) ↔ Parsing.seq P Q input r rest
+:= by
+  intro input (pr, pq) rest
+  constructor
+  · intro h
+    cases hip: p input with
+    | ok r =>
+      cases hiq: q r.snd with
+      | ok s =>
+        simp [seq, hip, hiq] at h
+        exact ⟨r.fst, s.fst, r.snd,
+          Prod.ext h.1.1.symm h.1.2.symm,
+          (hp input r.fst r.snd).mp hip,
+          by simpa only [h.2] using (hq r.snd s.fst s.snd).mp hiq⟩
+      | error e => simp [seq, hip, hiq] at h
+    | error e => simp [seq, hip] at h
+  · intro ⟨a, b, mid, hr, hP, hQ⟩
+    rw [← hp] at hP
+    rw [← hq] at hQ
+    simp [seq, hP, hQ, hr]
 
 
 end RecursiveDescent
