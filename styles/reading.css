@@ -1,48 +1,86 @@
-/* Reading theme. Loaded after Verso's defaults; follows the OS without JavaScript. */
+/* Reading theme. Loaded after Verso's defaults; follows the OS without JavaScript.
+   Light: "Light Warm" — sepia paper, warm brown ink, brick-red keywords.
+   Dark: JetBrains Rider (New UI / Darcula lineage) — #1E1F22 editor ground,
+   orange keywords, blue constants, green strings, teal numbers.
+   Every text colour below has at least 4.5:1 contrast against the
+   background it sits on. */
 :root {
   color-scheme: light dark;
   --verso-text-font-family: "Iowan Old Style", "Palatino Linotype", "Book Antiqua", Palatino, Georgia, serif;
   --verso-structure-font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
-  --verso-code-font-family: "DejaVu Sans Mono", "SFMono-Regular", Consolas, "Liberation Mono", monospace;
-  --verso-background-color: #faf9f6;
-  --verso-surface-color: #f2f0eb;
-  --verso-text-color: #292c30;
-  --verso-structure-color: #343b43;
-  --verso-muted-color: #626870;
-  --verso-border-color: #d8d6cf;
-  --verso-link-color: #245d86;
-  --verso-link-visited-color: #655080;
-  --verso-link-hover-bg: #e6edf1;
-  --verso-current-bg: #e0e8ed;
-  --verso-current-fg: #203f56;
+  --verso-code-font-family: "JetBrains Mono", "DejaVu Sans Mono", "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+
+  /* Light Warm: page and surfaces */
+  --verso-background-color: #f7f0df;
+  --verso-surface-color: #efe5cf;
+  --verso-text-color: #3a3226;
+  --verso-structure-color: #2e2820;
+  --verso-muted-color: #6e6250;
+  --verso-border-color: #d9cbae;
+  --verso-link-color: #1d5c73;
+  --verso-link-visited-color: #70375f;
+  --verso-link-hover-bg: #efe0bc;
+  --verso-current-bg: #e6d3a7;
+  --verso-current-fg: #3a3226;
   --verso-breadcrumb-color: var(--verso-muted-color);
-  --verso-code-box-background-color: #f0efeb;
-  --verso-code-box-border-color: #d8d6cf;
-  --verso-code-color: #292c30;
-  --verso-code-keyword-color: #75406f;
-  --verso-code-const-color: #245d86;
-  --verso-code-var-color: #35624c;
-  --verso-code-var-style: normal;
-  --verso-code-hover-bg-color: #dce5eb;
-  --verso-inline-code-bg: #eceae4;
-  --verso-selected-color: #dce5eb;
+
+  /* Light Warm: code */
+  --verso-code-box-background-color: #fdf9ee;
+  --verso-code-box-border-color: #d9cbae;
+  --verso-code-color: #3d352a;
+  --verso-code-keyword-color: #9e2b1e;
+  --verso-code-keyword-weight: normal;
+  --verso-code-const-color: #1f5c7a;
+  --verso-code-const-weight: normal;
+  --verso-code-var-color: #7a3b6e;
+  --verso-code-var-style: italic;
+  --verso-code-string-color: #406b2e;
+  --verso-code-number-color: #8a5a00;
+  --verso-code-comment-color: #71644e;
+  --verso-code-doc-color: #5f7355;
+  --verso-code-punct-color: #7a6e58;
+  --verso-code-annotation-color: #6b6210;
+  --verso-code-hover-bg-color: #f0e2c4;
+  --verso-inline-code-bg: #efe5cc;
+  --verso-selected-color: #f0dfae;
+
+  /* Light Warm: tooltips, proof states, diagnostics */
   --verso-tooltip-color: var(--verso-code-color);
-  --verso-tooltip-bg-color: #f7f6f2;
-  --verso-tooltip-border-color: #939a9e;
+  --verso-tooltip-bg-color: #fffbef;
+  --verso-tooltip-border-color: #b3a586;
   --verso-tooltip-separator-color: var(--verso-border-color);
   --verso-tactic-state-color: var(--verso-code-color);
   --verso-tactic-state-bg-color: var(--verso-tooltip-bg-color);
   --verso-tactic-state-border-color: var(--verso-tooltip-border-color);
-  --verso-tactic-toggle-color: #707780;
-  --verso-tactic-toggle-checked-color: #245d86;
+  --verso-tactic-toggle-color: #a79b80;
+  --verso-tactic-toggle-checked-color: #1d5c73;
+  --verso-info-indicator-color: #1f5c7a;
+  --verso-code-info-hover-bg-color: #dce8ec;
+  --verso-tooltip-info-border-color: #a9c4cf;
+  --verso-message-info-color: var(--verso-tooltip-color);
+  --verso-output-info-color: var(--verso-info-indicator-color);
+  --verso-warning-indicator-color: #8a5a00;
+  --verso-code-warning-hover-bg-color: #f5e3b0;
+  --verso-tooltip-warning-border-color: #d9b96a;
+  --verso-message-warning-color: #7a5200;
+  --verso-output-warning-color: var(--verso-warning-indicator-color);
+  --verso-error-indicator-color: #b3261e;
+  --verso-code-error-hover-bg-color: #f3d3ce;
+  --verso-tooltip-error-border-color: #d8a09a;
+  --verso-message-error-color: #9e2b1e;
+  --verso-output-error-color: var(--verso-error-indicator-color);
+
+  /* Light Warm: remaining chrome */
   --verso-imports-summary-color: var(--verso-muted-color);
   --verso-output-color: var(--verso-code-color);
-  --verso-blockquote-color: var(--verso-muted-color);
-  --verso-blockquote-border-color: var(--verso-border-color);
+  --verso-blockquote-color: #5e5342;
+  --verso-blockquote-border-color: #cbbd97;
+  --verso-docstring-border-color: var(--verso-border-color);
   --verso-copy-button-bg: var(--verso-surface-color);
   --verso-copy-button-color: var(--verso-muted-color);
   --verso-copy-button-border: var(--verso-border-color);
   --verso-copy-button-hover-bg: var(--verso-code-hover-bg-color);
+  --verso-copy-button-copied-color: #406b2e;
   --verso-hamburger-bg: var(--verso-surface-color);
   --verso-hamburger-border: var(--verso-border-color);
   --verso-hamburger-bar-color: var(--verso-text-color);
@@ -50,32 +88,96 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --verso-background-color: #1c2025;
-    --verso-surface-color: #22272d;
-    --verso-text-color: #e2dfd7;
-    --verso-structure-color: #dededb;
-    --verso-muted-color: #a8adb3;
-    --verso-border-color: #424950;
-    --verso-link-color: #9bc6e5;
-    --verso-link-visited-color: #c4b1dd;
-    --verso-link-hover-bg: #303d48;
-    --verso-current-bg: #303d48;
-    --verso-current-fg: #d9e9f4;
-    --verso-code-box-background-color: #24292f;
-    --verso-code-box-border-color: #424950;
-    --verso-code-color: #e2dfd7;
-    --verso-code-keyword-color: #d8acd4;
-    --verso-code-const-color: #9bc6e5;
-    --verso-code-var-color: #add0b6;
-    --verso-code-hover-bg-color: #394651;
-    --verso-inline-code-bg: #2b3138;
-    --verso-selected-color: #394651;
-    --verso-tooltip-bg-color: #2b3138;
-    --verso-tooltip-border-color: #77818b;
-    --verso-tactic-toggle-color: #a8adb3;
-    --verso-tactic-toggle-checked-color: #9bc6e5;
+    /* Rider dark: page and surfaces (editor #1E1F22, tool windows #2B2D30) */
+    --verso-background-color: #1e1f22;
+    --verso-surface-color: #2b2d30;
+    --verso-text-color: #ced0d6;
+    --verso-structure-color: #e6e8ec;
+    --verso-muted-color: #9da0a8;
+    --verso-border-color: #393b40;
+    --verso-link-color: #7fb8f5;
+    --verso-link-visited-color: #c99fe0;
+    --verso-link-hover-bg: #2c3644;
+    --verso-current-bg: #2e436e;
+    --verso-current-fg: #ffffff;
+    --verso-breadcrumb-color: var(--verso-muted-color);
+
+    /* Rider dark: code (Darcula/New UI syntax colours on #26282E panels) */
+    --verso-code-box-background-color: #26282e;
+    --verso-code-box-border-color: #393b40;
+    --verso-code-color: #bcbec4;
+    --verso-code-keyword-color: #cf8e6d;
+    --verso-code-const-color: #56a8f5;
+    --verso-code-var-color: #c77dbb;
+    --verso-code-string-color: #6aab73;
+    --verso-code-number-color: #2aacb8;
+    /* Rider's own comment grey #7A7E85 is only 3.6:1 here; lightened to
+       #969AA3 (5.2:1) so comments stay readable instead of fading out. */
+    --verso-code-comment-color: #969aa3;
+    --verso-code-doc-color: #7fa98a;
+    --verso-code-punct-color: #8e9299;
+    --verso-code-annotation-color: #b3ae60;
+    --verso-code-hover-bg-color: #393b40;
+    --verso-inline-code-bg: #2b2d30;
+    --verso-selected-color: #404654;
+
+    /* Rider dark: tooltips, proof states, diagnostics */
+    --verso-tooltip-color: #ced0d6;
+    --verso-tooltip-bg-color: #2b2d30;
+    --verso-tooltip-border-color: #4e5157;
+    --verso-tooltip-separator-color: #393b40;
+    --verso-tactic-state-color: var(--verso-tooltip-color);
+    --verso-tactic-state-bg-color: var(--verso-tooltip-bg-color);
+    --verso-tactic-state-border-color: var(--verso-tooltip-border-color);
+    --verso-tactic-toggle-color: #7a7e85;
+    --verso-tactic-toggle-checked-color: #56a8f5;
+    --verso-info-indicator-color: #56a8f5;
+    --verso-code-info-hover-bg-color: #2a3a4d;
+    --verso-tooltip-info-border-color: #3d4e66;
+    --verso-message-info-color: var(--verso-tooltip-color);
+    --verso-output-info-color: var(--verso-info-indicator-color);
+    --verso-warning-indicator-color: #e8b34b;
+    --verso-code-warning-hover-bg-color: #4a3d1f;
+    --verso-tooltip-warning-border-color: #6b5a2e;
+    --verso-message-warning-color: #e8b34b;
+    --verso-output-warning-color: var(--verso-warning-indicator-color);
+    --verso-error-indicator-color: #f26d6d;
+    --verso-code-error-hover-bg-color: #4d2a2a;
+    --verso-tooltip-error-border-color: #6e3a3a;
+    --verso-message-error-color: #f26d6d;
+    --verso-output-error-color: var(--verso-error-indicator-color);
+
+    /* Rider dark: remaining chrome */
+    --verso-imports-summary-color: var(--verso-muted-color);
+    --verso-output-color: var(--verso-code-color);
+    --verso-blockquote-color: #a8abb3;
+    --verso-blockquote-border-color: #393b40;
+    --verso-docstring-border-color: var(--verso-border-color);
+    --verso-copy-button-bg: var(--verso-surface-color);
+    --verso-copy-button-color: var(--verso-muted-color);
+    --verso-copy-button-border: var(--verso-border-color);
+    --verso-copy-button-hover-bg: var(--verso-code-hover-bg-color);
+    --verso-copy-button-copied-color: #6aab73;
+    --verso-hamburger-bg: var(--verso-surface-color);
+    --verso-hamburger-border: var(--verso-border-color);
+    --verso-hamburger-bar-color: var(--verso-text-color);
   }
 }
+
+/* Syntax tokens Verso does not expose as variables. Verso maps these token
+   kinds to the plain code colour; give each Rider/Light-Warm role its colour. */
+.hl.lean .literal.string,
+.hl.lean .literal.char { color: var(--verso-code-string-color); }
+.hl.lean .literal.number,
+.hl.lean .number { color: var(--verso-code-number-color); }
+.hl.lean .comment { color: var(--verso-code-comment-color); font-style: italic; }
+.hl.lean .doc-comment { color: var(--verso-code-doc-color); font-style: italic; }
+.hl.lean .sort { color: var(--verso-code-const-color); }
+.hl.lean .option { color: var(--verso-code-annotation-color); }
+.hl.lean .punctuation,
+.hl.lean .delim,
+.hl.lean .wildcard { color: var(--verso-code-punct-color); }
+::selection { background: var(--verso-selected-color); }
 
 /* Preserve Verso's scrollable navigation and mobile menu; center the article. */
 .main-area, .content-wrapper, .code-content { min-width: 0; }
