@@ -196,5 +196,43 @@ example: many (pure 1) [] = .error .noProgress
 example: many (choice (tk "a") (pure "fallback")) ["a"] = .error .noProgress
 := by simp [many, choice, tk, pure]
 
+-- The implementation is greedy; Parsing.many also allows stopping early.
+theorem many_spec_ok (hp: FollowsSpec p P):
+  ∀ input xs rest,
+    many p input = .ok (xs, rest) → Parsing.many P input xs rest
+:= by
+  intro input xs rest
+  induction xs generalizing input with
+  | nil =>
+    intro h
+    rw [many] at h
+    cases hip: p input with
+    | error e =>
+      simp [hip] at h
+      exact h
+    | ok r =>
+      simp only [hip] at h
+      split at h
+      · cases hm: many p r.snd with
+        | error e => simp [hm] at h
+        | ok s => simp [hm] at h
+      · simp at h
+  | cons x xs ih =>
+    intro h
+    rw [many] at h
+    cases hip: p input with
+    | error e => simp [hip] at h
+    | ok r =>
+      simp only [hip] at h
+      split at h
+      · cases hm: many p r.snd with
+        | error e => simp [hm] at h
+        | ok s =>
+          simp only [hm, Except.ok.injEq, Prod.mk.injEq, List.cons.injEq] at h
+          exact ⟨r.snd,
+            (hp input x r.snd).mp (by rw [← h.1.1]; exact hip),
+            ih r.snd (by rw [← h.1.2, ← h.2]; exact hm)⟩
+      · simp at h
+
 
 end RecursiveDescent
