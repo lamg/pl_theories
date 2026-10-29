@@ -130,12 +130,12 @@ theorem first_choice_spec_ok (hp: FollowsSpec p P) (hq: FollowsSpec q Q):
     cases hip: p input with
     | ok res =>
       simp
-      sorry
+      simpa [Parsing.first_choice, ← hp input, hip, Prod.ext_iff] using h_fst_choice
     | error e =>
       simp
       cases hiq : q input with
-      | ok res => simp; sorry
-      | error e => sorry
+      | ok res => simp; simpa [Parsing.first_choice, ← hp input, ← hq input, hip, hiq, Prod.ext_iff] using h_fst_choice
+      | error e => simp [Parsing.first_choice, ← hp input, ← hq input, hip, hiq] at h_fst_choice
 
 
 
