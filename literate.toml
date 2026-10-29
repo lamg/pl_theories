@@ -1,4 +1,5 @@
 extra_css = ["styles/reading.css"]
+extra_js = ["styles/const-kinds.js"]
 landing_page = "PlTheories"
 # Reading order for every level of the index, as full module names.
 order = ["PlTheories.Parsing", "PlTheories.FunZero", "PlTheories.FunZero.Syntax", "PlTheories.FunZero.Typechecking", "PlTheories.FunZero.Syntax.Language", "PlTheories.FunZero.Syntax.RecursiveDescent", "PlTheories.FunZero.Typechecking.BasicConcepts", "PlTheories.FunZero.Typechecking.Unification", "PlTheories.FunZero.Typechecking.AlgorithmW"]

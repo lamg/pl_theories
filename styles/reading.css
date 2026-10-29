@@ -1,7 +1,7 @@
 /* Reading theme. Loaded after Verso's defaults; follows the OS without JavaScript.
    Light: "Light Warm" — sepia paper, warm brown ink, brick-red keywords.
-   Dark: JetBrains Rider (New UI / Darcula lineage) — #1E1F22 editor ground,
-   orange keywords, blue constants, green strings, teal numbers.
+   Dark: the edsulaiman/jetbrains-rider-dark-theme VS Code clone of Rider —
+   #262626 editor ground, blue keywords, purple types, tan strings.
    Every text colour below has at least 4.5:1 contrast against the
    background it sits on. */
 :root {
@@ -34,6 +34,8 @@
   --verso-code-const-weight: normal;
   --verso-code-var-color: #7a3b6e;
   --verso-code-var-style: italic;
+  --verso-code-ctor-color: #14705e;
+  --verso-code-def-color: #8a4b0e;
   --verso-code-string-color: #406b2e;
   --verso-code-number-color: #8a5a00;
   --verso-code-comment-color: #71644e;
@@ -88,52 +90,58 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    /* Rider dark: page and surfaces (editor #1E1F22, tool windows #2B2D30) */
+    /* Rider dark, following the edsulaiman/jetbrains-rider-dark-theme VS Code
+       clone: chrome #1E1F22 / #2B2D30, editor ground #262626, text #BDBDBD. */
     --verso-background-color: #1e1f22;
     --verso-surface-color: #2b2d30;
-    --verso-text-color: #ced0d6;
-    --verso-structure-color: #e6e8ec;
-    --verso-muted-color: #9da0a8;
-    --verso-border-color: #393b40;
-    --verso-link-color: #7fb8f5;
-    --verso-link-visited-color: #c99fe0;
-    --verso-link-hover-bg: #2c3644;
+    --verso-text-color: #bdbdbd;
+    --verso-structure-color: #dfe1e5;
+    --verso-muted-color: #9fa1a5;
+    --verso-border-color: #393b41;
+    --verso-link-color: #82acfc;
+    --verso-link-visited-color: #c191ff;
+    --verso-link-hover-bg: #2e436e;
     --verso-current-bg: #2e436e;
     --verso-current-fg: #ffffff;
     --verso-breadcrumb-color: var(--verso-muted-color);
 
-    /* Rider dark: code (Darcula/New UI syntax colours on #26282E panels) */
-    --verso-code-box-background-color: #26282e;
-    --verso-code-box-border-color: #393b40;
-    --verso-code-color: #bcbec4;
-    --verso-code-keyword-color: #cf8e6d;
-    --verso-code-const-color: #56a8f5;
-    --verso-code-var-color: #c77dbb;
-    --verso-code-string-color: #6aab73;
-    --verso-code-number-color: #2aacb8;
-    /* Rider's own comment grey #7A7E85 is only 3.6:1 here; lightened to
-       #969AA3 (5.2:1) so comments stay readable instead of fading out. */
-    --verso-code-comment-color: #969aa3;
-    --verso-code-doc-color: #7fa98a;
-    --verso-code-punct-color: #8e9299;
-    --verso-code-annotation-color: #b3ae60;
-    --verso-code-hover-bg-color: #393b40;
+    /* Clone syntax colours on the #262626 editor ground. Verso has a single
+       `const` class for types and functions, so it takes the clone's type
+       purple; locals keep the clone's plain foreground and stay distinct
+       through italics. */
+    --verso-code-box-background-color: #262626;
+    --verso-code-box-border-color: #393b41;
+    --verso-code-color: #bdbdbd;
+    --verso-code-keyword-color: #6c95eb;
+    --verso-code-const-color: #c191ff;
+    --verso-code-var-color: #bdbdbd;
+    --verso-code-ctor-color: #65c3cc;
+    --verso-code-def-color: #3acc9b;
+    --verso-code-string-color: #c8a16d;
+    --verso-code-number-color: #ec94c0;
+    --verso-code-comment-color: #85c46c;
+    /* The clone's doc-comment green #477D33 is only 3.1:1 here, so doc
+       comments share the readable comment green instead. */
+    --verso-code-doc-color: #85c46c;
+    --verso-code-punct-color: #bdbdbd;
+    --verso-code-annotation-color: #65c3cc;
+    --verso-code-hover-bg-color: #43454a;
     --verso-inline-code-bg: #2b2d30;
-    --verso-selected-color: #404654;
+    --verso-selected-color: #09335e;
 
-    /* Rider dark: tooltips, proof states, diagnostics */
-    --verso-tooltip-color: #ced0d6;
+    /* Tooltips, proof states, diagnostics */
+    --verso-tooltip-color: #bdbdbd;
     --verso-tooltip-bg-color: #2b2d30;
-    --verso-tooltip-border-color: #4e5157;
-    --verso-tooltip-separator-color: #393b40;
+    --verso-tooltip-border-color: #393b41;
+    --verso-tooltip-separator-color: #393b41;
     --verso-tactic-state-color: var(--verso-tooltip-color);
     --verso-tactic-state-bg-color: var(--verso-tooltip-bg-color);
     --verso-tactic-state-border-color: var(--verso-tooltip-border-color);
-    --verso-tactic-toggle-color: #7a7e85;
-    --verso-tactic-toggle-checked-color: #56a8f5;
-    --verso-info-indicator-color: #56a8f5;
-    --verso-code-info-hover-bg-color: #2a3a4d;
-    --verso-tooltip-info-border-color: #3d4e66;
+    --verso-tactic-toggle-color: #9fa1a5;
+    --verso-tactic-toggle-checked-color: #82acfc;
+    --verso-info-indicator-color: #6c95eb;
+    --verso-code-info-hover-bg-color: #2e436e;
+    --verso-tooltip-info-border-color: #3474f0;
     --verso-message-info-color: var(--verso-tooltip-color);
     --verso-output-info-color: var(--verso-info-indicator-color);
     --verso-warning-indicator-color: #e8b34b;
@@ -147,17 +155,17 @@
     --verso-message-error-color: #f26d6d;
     --verso-output-error-color: var(--verso-error-indicator-color);
 
-    /* Rider dark: remaining chrome */
+    /* Remaining chrome */
     --verso-imports-summary-color: var(--verso-muted-color);
     --verso-output-color: var(--verso-code-color);
-    --verso-blockquote-color: #a8abb3;
-    --verso-blockquote-border-color: #393b40;
+    --verso-blockquote-color: #9fa1a5;
+    --verso-blockquote-border-color: #393b41;
     --verso-docstring-border-color: var(--verso-border-color);
     --verso-copy-button-bg: var(--verso-surface-color);
     --verso-copy-button-color: var(--verso-muted-color);
     --verso-copy-button-border: var(--verso-border-color);
     --verso-copy-button-hover-bg: var(--verso-code-hover-bg-color);
-    --verso-copy-button-copied-color: #6aab73;
+    --verso-copy-button-copied-color: #85c46c;
     --verso-hamburger-bg: var(--verso-surface-color);
     --verso-hamburger-border: var(--verso-border-color);
     --verso-hamburger-bar-color: var(--verso-text-color);
@@ -173,6 +181,10 @@
 .hl.lean .comment { color: var(--verso-code-comment-color); font-style: italic; }
 .hl.lean .doc-comment { color: var(--verso-code-doc-color); font-style: italic; }
 .hl.lean .sort { color: var(--verso-code-const-color); }
+/* Kinds within Verso's single `const` class, tagged by const-kinds.js from
+   the Lean environment: types keep the const colour above. */
+.hl.lean .const-ctor { color: var(--verso-code-ctor-color); }
+.hl.lean .const-def { color: var(--verso-code-def-color); }
 .hl.lean .option { color: var(--verso-code-annotation-color); }
 .hl.lean .punctuation,
 .hl.lean .delim,
