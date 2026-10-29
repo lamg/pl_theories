@@ -1,4 +1,4 @@
-import PlTheories.FunZero.Unification
+import PlTheories.FunZero.Typechecking.Unification
 
 /-!
 # Typing rules and the contract for Algorithm W

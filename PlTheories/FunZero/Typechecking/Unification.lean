@@ -1,4 +1,4 @@
-import PlTheories.FunZero.BasicConcepts
+import PlTheories.FunZero.Typechecking.BasicConcepts
 
 /-!
 # Making types agree

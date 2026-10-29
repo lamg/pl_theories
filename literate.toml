@@ -1,6 +1,7 @@
 extra_css = ["styles/reading.css"]
 landing_page = "PlTheories"
-exclude = ["PlTheories.FunZero.Typechecking"]
+# Reading order for every level of the index, as full module names.
+order = ["PlTheories.Parsing", "PlTheories.FunZero", "PlTheories.FunZero.Syntax", "PlTheories.FunZero.Typechecking", "PlTheories.FunZero.Syntax.Language", "PlTheories.FunZero.Syntax.RecursiveDescent", "PlTheories.FunZero.Typechecking.BasicConcepts", "PlTheories.FunZero.Typechecking.Unification", "PlTheories.FunZero.Typechecking.AlgorithmW"]
 docstrings_as_text = true
 hide_commands = ["import", "open"]
 
@@ -11,30 +12,32 @@ library = "PlTheories"
 title = "Programming Language Theories"
 description = "Building a small programming language in Lean, from specifications to implementations and proofs."
 
-[order_children]
-"PlTheories" = ["PlTheories.Parsing", "PlTheories.FunZero"]
-"PlTheories.FunZero" = ["PlTheories.FunZero.Syntax", "PlTheories.FunZero.RecursiveDescent", "PlTheories.FunZero.BasicConcepts", "PlTheories.FunZero.Unification", "PlTheories.FunZero.AlgorithmW"]
-
 [modules."PlTheories"]
 title = "Programming Language Theories"
 
 [modules."PlTheories.Parsing"]
 title = "Parser specifications"
 
-[modules."PlTheories.FunZero.Syntax"]
-title = "Language syntax"
-
-[modules."PlTheories.FunZero.RecursiveDescent"]
-title = "Recursive descent"
-
-[modules."PlTheories.FunZero.BasicConcepts"]
-title = "Basic concepts"
-
-[modules."PlTheories.FunZero.Unification"]
-title = "Unification"
-
-[modules."PlTheories.FunZero.AlgorithmW"]
-title = "Algorithm W"
-
 [modules."PlTheories.FunZero"]
 title = "A small functional language"
+
+[modules."PlTheories.FunZero.Syntax"]
+title = "Syntax"
+
+[modules."PlTheories.FunZero.Syntax.Language"]
+title = "Language syntax"
+
+[modules."PlTheories.FunZero.Syntax.RecursiveDescent"]
+title = "Recursive descent"
+
+[modules."PlTheories.FunZero.Typechecking"]
+title = "Typechecking"
+
+[modules."PlTheories.FunZero.Typechecking.BasicConcepts"]
+title = "Basic concepts"
+
+[modules."PlTheories.FunZero.Typechecking.Unification"]
+title = "Unification"
+
+[modules."PlTheories.FunZero.Typechecking.AlgorithmW"]
+title = "Algorithm W"

@@ -1,4 +1,4 @@
-import PlTheories.FunZero.Syntax
+import PlTheories.FunZero.Syntax.Language
 
 /-!
 # Basic concepts
