@@ -7,6 +7,7 @@ inductive ParseError where
   | unexpectedEnd (expected : String)
   | expectingOneOf (choice₀ choice₁ : ParseError)
   | alwaysFails
+  | guardFailed
   | noProgress
 deriving DecidableEq, Repr
 
@@ -234,5 +235,140 @@ theorem many_spec_ok (hp: FollowsSpec p P):
             ih r.snd (by rw [← h.1.2, ← h.2]; exact hm)⟩
       · simp at h
 
+
+-- General forms for use as premises of the combinator correctness theorems.
+theorem tk_follows_spec (s: String): FollowsSpec (tk s) (Parsing.tk s) := by
+  intro input result rest
+  cases input with
+  | nil => simp [tk, Parsing.tk]
+  | cons x xs =>
+    by_cases h : x = s
+    · subst x
+      simp [tk, Parsing.tk, eq_comm, and_comm]
+    · simp [tk, Parsing.tk, h]
+
+theorem any_follows_spec: FollowsSpec any Parsing.any := by
+  intro input result rest
+  cases input with
+  | nil => simp [any, Parsing.any]
+  | cons x xs => simp [any, Parsing.any]
+
+-- Deterministic choice is sound for the nondeterministic specification.
+theorem choice_spec_ok (hp: FollowsSpec p P) (hq: FollowsSpec q Q):
+  ∀ input result rest,
+    choice p q input = .ok (result, rest) → Parsing.choice P Q input result rest
+:= by
+  intro input result rest h
+  rcases (first_choice_spec_ok hp hq input result rest).mp h with hP | ⟨_, hQ⟩
+  · exact Or.inl hP
+  · exact Or.inr hQ
+
+def map (f: α → β) (p: RdParser α): RdParser β :=
+  fun input =>
+    match p input with
+    | .ok (x, rest) => .ok (f x, rest)
+    | .error e => .error e
+
+theorem map_spec_ok (f: α → β) (hp: FollowsSpec p P):
+  FollowsSpec (map f p) (Parsing.map f P)
+:= by
+  intro input result rest
+  cases h: p input with
+  | error e => simp [map, Parsing.map, ← hp input, h]
+  | ok r =>
+    rcases r with ⟨x, remaining⟩
+    simp only [map, h, Except.ok.injEq, Prod.mk.injEq, Parsing.map, ← hp input]
+    constructor
+    · intro ⟨hf, hr⟩
+      exact ⟨x, ⟨rfl, hr⟩, hf⟩
+    · intro ⟨a, ⟨ha, hr⟩, hf⟩
+      exact ⟨ha ▸ hf, hr⟩
+
+def guardp (f: α → Bool) (p: RdParser α): RdParser α :=
+  fun input =>
+    match p input with
+    | .ok (x, rest) =>
+      if f x then .ok (x, rest) else .error .guardFailed
+    | .error e => .error e
+
+theorem guardp_spec_ok (f: α → Bool) (hp: FollowsSpec p P):
+  FollowsSpec (guardp f p) (Parsing.guardp f P)
+:= by
+  intro input result rest
+  cases h: p input with
+  | error e => simp [guardp, Parsing.guardp, ← hp input, h]
+  | ok r =>
+    rcases r with ⟨x, remaining⟩
+    by_cases hf : f x = true
+    · simp [guardp, Parsing.guardp, ← hp input, h, hf]
+      intro hx _
+      simpa [← hx] using hf
+    · simp [guardp, Parsing.guardp, ← hp input, h, hf]
+      intro _ hx _
+      subst result
+      contradiction
+
+def all_digits := Parsing.all_digits
+def all_alpha := Parsing.all_alpha
+
+def digits := guardp all_digits any
+def alpha := guardp all_alpha any
+
+theorem digits_spec_ok: FollowsSpec digits Parsing.digits :=
+  guardp_spec_ok all_digits any_follows_spec
+
+theorem alpha_spec_ok: FollowsSpec alpha Parsing.alpha :=
+  guardp_spec_ok all_alpha any_follows_spec
+
+def left (p: RdParser α) (q: RdParser β): RdParser α :=
+  map Prod.fst (seq p q)
+
+theorem left_spec_ok (hp: FollowsSpec p P) (hq: FollowsSpec q Q):
+  FollowsSpec (left p q) (Parsing.left P Q)
+:= by
+  intro input result rest
+  rw [left, map_spec_ok Prod.fst (seq_spec_ok hp hq)]
+  constructor
+  · intro ⟨⟨a, b⟩, ⟨x, y, mid, hr, hP, hQ⟩, ha⟩
+    cases hr
+    subst result
+    exact ⟨mid, b, hP, hQ⟩
+  · intro ⟨mid, ignored, hP, hQ⟩
+    exact ⟨(result, ignored), ⟨result, ignored, mid, rfl, hP, hQ⟩, rfl⟩
+
+def right (p: RdParser α) (q: RdParser β): RdParser β :=
+  map Prod.snd (seq p q)
+
+theorem right_spec_ok (hp: FollowsSpec p P) (hq: FollowsSpec q Q):
+  FollowsSpec (right p q) (Parsing.right P Q)
+:= by
+  intro input result rest
+  rw [right, map_spec_ok Prod.snd (seq_spec_ok hp hq)]
+  constructor
+  · intro ⟨⟨a, b⟩, ⟨x, y, mid, hr, hP, hQ⟩, hb⟩
+    cases hr
+    subst result
+    exact ⟨mid, a, hP, hQ⟩
+  · intro ⟨mid, ignored, hP, hQ⟩
+    exact ⟨(ignored, result), ⟨ignored, result, mid, rfl, hP, hQ⟩, rfl⟩
+
+example: map String.length (tk "abcd") ["abcd", "rest"] = .ok (4, ["rest"]) := rfl
+example: digits ["33", "bla"] = .ok ("33", ["bla"]) := by
+  simp [digits, guardp, any, all_digits, Parsing.all_digits]
+example: digits ["bla"] = .error .guardFailed := by
+  simp [digits, guardp, any, all_digits, Parsing.all_digits]
+example: alpha ["abc", "12"] = .ok ("abc", ["12"]) := by
+  simp [alpha, guardp, any, all_alpha, Parsing.all_alpha]
+example: left digits alpha ["12", "bla"] = .ok ("12", []) := by
+  simp [left, map, seq, digits, alpha, guardp, any, all_digits, all_alpha,
+    Parsing.all_digits, Parsing.all_alpha]
+example: right digits alpha ["12", "bla"] = .ok ("bla", []) := by
+  simp [right, map, seq, digits, alpha, guardp, any, all_digits, all_alpha,
+    Parsing.all_digits, Parsing.all_alpha]
+example: left digits alpha ["12", "34"] = .error .guardFailed := by
+  simp [left, map, seq, digits, alpha, guardp, any, all_digits, all_alpha,
+    Parsing.all_digits, Parsing.all_alpha]
+example: right digits alpha ["bad", "abc"] = .error .guardFailed := by
+  simp [right, map, seq, digits, guardp, any, all_digits, Parsing.all_digits]
 
 end RecursiveDescent
