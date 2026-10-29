@@ -7,6 +7,7 @@ inductive ParseError where
   | unexpectedEnd (expected : String)
   | expectingOneOf (choice₀ choice₁ : ParseError)
   | alwaysFails
+  | noProgress
 deriving DecidableEq, Repr
 
 abbrev RdParser α := List String → Except ParseError (α × List String)
@@ -169,6 +170,31 @@ theorem seq_spec_ok (hp: FollowsSpec p P) (hq: FollowsSpec q Q):
     rw [← hp] at hP
     rw [← hq] at hQ
     simp [seq, hP, hQ, hr]
+
+def many (p: RdParser α): RdParser (List α) :=
+  fun input =>
+    match p input with
+    | .ok (x, first_rest) =>
+      if first_rest.length < input.length then
+        match many p first_rest with
+        | .ok (xs, rem_rest) => .ok (x :: xs, rem_rest)
+        | .error e => .error e
+      else
+        .error .noProgress
+    | .error _ => .ok ([], input)
+
+termination_by input => input.length
+
+example: many (tk "a") ["a", "a", "b"] = .ok (["a", "a"], ["b"])
+:= by simp [many, tk]
+example: many (tk "a") ["b"] = .ok ([], ["b"])
+:= by simp [many, tk]
+example: many (tk "a") [] = .ok ([], [])
+:= by simp [many, tk]
+example: many (pure 1) [] = .error .noProgress
+:= by simp [many, pure]
+example: many (choice (tk "a") (pure "fallback")) ["a"] = .error .noProgress
+:= by simp [many, choice, tk, pure]
 
 
 end RecursiveDescent
