@@ -1,6 +1,7 @@
 import PlTheories.FunZero.Syntax.Parsing
 import PlTheories.FunZero.Syntax.Language
 import PlTheories.FunZero.Syntax.RecursiveDescent
+import PlTheories.FunZero.Syntax.RecursiveDescentProofs
 
 /-!
 # Syntax

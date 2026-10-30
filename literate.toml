@@ -15,6 +15,11 @@ order = [
 ]
 docstrings_as_text = true
 hide_commands = ["import", "open", "namespace", "end", "set_option", "example"]
+# Helpers for `Language` (tokens, identifier, literals, token parsers) live
+# in `Helpers`, and the Recursive Descent correctness proofs live in
+# `RecursiveDescentProofs`, so those pages can show only the definitions.
+# Both modules are still built and imported; they just get no page.
+exclude = ["PlTheories.FunZero.Syntax.Helpers", "PlTheories.FunZero.Syntax.RecursiveDescentProofs"]
 
 [[targets]]
 library = "PlTheories"

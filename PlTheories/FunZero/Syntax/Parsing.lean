@@ -20,10 +20,8 @@ def tk (s: String): Parser String :=
   fun input result rest =>
     input = s :: rest ∧ result = s
 
-set_option pp.all false in
 example: (tk "let") ["let", "find_user"] "let" ["find_user"] := by decide
 
-set_option pp.all false in
 example: ¬ (tk "module") ["bla"] "bla" ["bla"] := by decide
 
 /--
@@ -76,28 +74,22 @@ def first_choice (x y : Parser α) : Parser α :=
     x input result rest ∨
       ((¬ ∃ r s, x input r s) ∧ y input result rest)
 
-set_option pp.all false in
 example: (first_choice (tk "bla") (tk "ok")) ["ok"] "ok" [] := by
   simp [first_choice, tk]
 
-set_option pp.all false in
 example: (first_choice (pure 1) (pure 2)) [] 1 [] := by
   simp [first_choice, pure]
 
-set_option pp.all false in
 example: ¬ (first_choice (pure 1) (pure 2)) [] 2 [] := by
   simp [first_choice, pure]
 
-set_option pp.all false in
 instance : OrElse (Parser α) where
   orElse p q := choice p (q ())
 
-set_option pp.all false in
 example: ((tk "ok") <|> (tk "bla")) ["ok"] "ok" [] := by
   show choice (tk "ok") (tk "bla") ["ok"] "ok" []
   decide
 
-set_option pp.all false in
 example: ((tk "bla") <|> (tk "bla")) ["bla"] "bla" [] := by
   show choice (tk "bla") (tk "bla") ["bla"] "bla" []
   decide
@@ -123,7 +115,6 @@ example: ((tk "a") <*> (tk "b")) ["a", "b"] ("a", "b") [] := by
   · simp
   · exists ["b"]
 
-set_option pp.all false in
 example: (tk "a" <*> tk "b") ["a", "b"] ("a", "b") [] :=
   ⟨"a", "b", ["b"], rfl, ⟨rfl, rfl⟩, ⟨rfl, rfl⟩⟩
 
@@ -136,10 +127,8 @@ def many (p: Parser α): Parser (List α)
   | input, a :: results, rest =>
     ∃ mid, p input a mid ∧ many p mid results rest
 
-set_option pp.all false in
 example: many (tk "a") ["b"] [] ["b"] := rfl
 
-set_option pp.all false in
 example: many (tk "a") ["a", "a", "b"] ["a", "a"] ["b"] := by
   simp [many]
   exists ["a", "b"]
@@ -154,11 +143,9 @@ def map (f: α → β) (p: Parser α): Parser β :=
 
 infixr:100 " <$> " => map
 
-set_option pp.all false in
 example: (String.length <$> tk "abcd") ["abcd"] 4 [] :=
   ⟨"abcd", ⟨rfl, rfl⟩, rfl⟩
 
-set_option pp.all false in
 example: map (String.toInt?) (tk "1") ["1"] (.some 1) [] := by
   simp [map]
   exists "1"
@@ -173,17 +160,13 @@ def guardp(f: α → Bool) (p: Parser α): Parser α :=
   fun input result rest =>
     (f result) ∧ p input result rest
 
-set_option pp.all false in
 def all_digits (xs: String) := xs.all Char.isDigit
 
-set_option pp.all false in
 def all_alpha (xs: String) := xs.all Char.isAlpha
 
-set_option pp.all false in
 example: guardp all_digits any ["33", "bla"] "33" ["bla"] := by
   simp [guardp, all_digits]
 
-set_option pp.all false in
 example: ¬guardp all_digits any ["bla"] "" ["bla"] := by
   simp [guardp]
 
@@ -204,7 +187,6 @@ def left (p: Parser α) (q: Parser β): Parser α :=
 
 infixl:60 " <* " => left
 
-set_option pp.all false in
 example: (digits <* alpha) ["12", "bla"] "12" [] := by
   simp [left, digits, guardp, all_digits, alpha, all_alpha]
 
@@ -218,7 +200,6 @@ def right (p: Parser α) (q: Parser β): Parser β :=
 
 infixl:60 " *> " => right
 
-set_option pp.all false in
 example: (digits *> alpha) ["12", "bla"] "bla" [] := by
   simp [right, digits, guardp, alpha, all_digits, all_alpha]
 

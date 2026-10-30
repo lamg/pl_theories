@@ -55,7 +55,7 @@ inductive HasType : Context → Syntax.Expr → FzType → Prop where
       HasType Γ (.app f arg) b
   | lambda :
       HasType (extend Γ x (Scheme.mono a)) body b →
-      HasType Γ (.lambda x body) (.arrow a b)
+      HasType Γ (.abs x body) (.arrow a b)
   | let_ :
       HasType Γ binding a →
       HasType (extend Γ x (generalize Γ a)) body b →
@@ -100,7 +100,7 @@ theorem instantiates_mono (a b: FzType): Instantiates (Scheme.mono a) b ↔ a = 
 
 example: HasType [] (.literal (.number_lit 42)) (.tcon "Nat") := .literal
 
-example (t: FzType): HasType [] (.lambda "x" (.var "x")) (.arrow t t) := by
+example (t: FzType): HasType [] (.abs "x" (.var "x")) (.arrow t t) := by
   apply HasType.lambda
   exact HasType.var (lookup_extend_same _ _ _) ((instantiates_mono t t).mpr rfl)
 
@@ -111,7 +111,7 @@ example: generalize [("x", Scheme.mono (.tvar "a"))]
 
 -- A let-bound identity can be instantiated at two types in the same body.
 example: HasType []
-    (.let_ "id" (.lambda "x" (.var "x"))
+    (.let_ "id" (.abs "x" (.var "x"))
       (.tuple (.app (.var "id") (.literal (.number_lit 1)))
         (.app (.var "id") (.literal (.bool_lit true)))))
     (.prod (.tcon "Nat") (.tcon "Bool")) := by
