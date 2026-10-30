@@ -34,7 +34,7 @@ sequences of tokens, consuming the head token.
 def any : Parser String :=
   fun input result rest => input = result :: rest
 
-example: any ["a", "b"] "a" ["b"]  := by decide
+example: any ["a", "b"] "a" ["b"] := by decide
 
 /--
 _pure_ consumes no input and returns its parameter as successfully parsed

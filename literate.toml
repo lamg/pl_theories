@@ -2,9 +2,19 @@ extra_css = ["styles/reading.css"]
 extra_js = ["styles/const-kinds.js"]
 landing_page = "PlTheories"
 # Reading order for every level of the index, as full module names.
-order = ["PlTheories.FunZero", "PlTheories.FunZero.Syntax", "PlTheories.FunZero.Typechecking", "PlTheories.FunZero.Syntax.Parsing", "PlTheories.FunZero.Syntax.Language", "PlTheories.FunZero.Syntax.RecursiveDescent", "PlTheories.FunZero.Typechecking.BasicConcepts", "PlTheories.FunZero.Typechecking.Unification", "PlTheories.FunZero.Typechecking.AlgorithmW"]
+order = [
+  "PlTheories.FunZero",
+  "PlTheories.FunZero.Syntax",
+  "PlTheories.FunZero.Typechecking",
+  "PlTheories.FunZero.Syntax.Parsing",
+  "PlTheories.FunZero.Syntax.Language",
+  "PlTheories.FunZero.Syntax.RecursiveDescent",
+  "PlTheories.FunZero.Typechecking.BasicConcepts",
+  "PlTheories.FunZero.Typechecking.Unification",
+  "PlTheories.FunZero.Typechecking.AlgorithmW",
+]
 docstrings_as_text = true
-hide_commands = ["import", "open"]
+hide_commands = ["import", "open", "namespace", "end", "set_option", "example"]
 
 [[targets]]
 library = "PlTheories"
@@ -18,11 +28,6 @@ title = "Programming Language Theories"
 
 [modules."PlTheories.FunZero.Syntax.Parsing"]
 title = "Parser specifications"
-# Replaces the global list for this module, so repeat it. `set_option`
-# hides the `all_digits`/`all_alpha` block in `Parsing.lean`, whose
-# definitions are wrapped in `set_option pp.all false in`. Matching is
-# on leading keywords, so no comment may precede those wrappers.
-hide_commands = ["import", "open", "set_option"]
 
 [modules."PlTheories.FunZero"]
 title = "A small functional language"
