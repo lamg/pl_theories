@@ -50,43 +50,6 @@ def is_string (xs: String): Bool :=
 def unquote (s: String): String :=
   ((s.drop 1).dropEnd 1).toString
 
-inductive Literal where
-| number_lit (s: Nat)
-| bool_lit (b: Bool)
-| string_lit (s: String)
-
-@[reducible]
-def make_number (s: String): Literal := .number_lit s.toNat!
-
-@[reducible]
-def make_bool (s: String): Literal := .bool_lit (s == true_token)
-
-@[reducible]
-def make_string (s: String): Literal := .string_lit (unquote s)
-
-@[reducible]
-def literal : Parser Literal :=
-  make_number <$> guardp is_number any
-  <|> make_bool <$> guardp is_bool any
-  <|> make_string <$> guardp is_string any
-
-example: literal ["42", "bla"] (.number_lit 42) ["bla"] := by
-  simp [literal, HOrElse.hOrElse, OrElse.orElse, choice, map, guardp]
-  exists "42"
-  native_decide
-
-example: literal ["true", "bla"] (.bool_lit true) ["bla"] := by
-  simp [literal, HOrElse.hOrElse, OrElse.orElse, choice, map, guardp]
-  decide
-
-example: literal ["\"hi\"", "bla"] (.string_lit "hi") ["bla"] := by
-  simp only [literal, HOrElse.hOrElse, OrElse.orElse, choice, map, guardp]
-  right
-  right
-  exists "\"hi\""
-  simp [unquote]
-  native_decide
-
 def lparen : Parser String := tk lparen_token
 def rparen : Parser String := tk rparen_token
 def comma : Parser String := tk comma_token

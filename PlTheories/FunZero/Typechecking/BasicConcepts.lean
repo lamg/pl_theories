@@ -26,7 +26,7 @@ namespace Typechecking
 
 /--
 A literal already tells us what kind of value it represents.
-`Syntax.Literal` distinguishes numbers,
+[`Syntax.Literal`](PlTheories/FunZero/Syntax/Language/#Syntax___Literal) distinguishes numbers,
 booleans, and strings. Number literals contain a `Nat`, so their type is `Nat`.
 -/
 def literalType : Syntax.Literal → FzType

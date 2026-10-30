@@ -287,3 +287,13 @@
   .title-bar #search-wrapper { max-width: 24rem; }
 }
 @media print { .title-bar { display: none; } }
+
+/* Verso 4.35's Markdown renderer emits list items as <p> inside <ul>/<ol>
+   without <li>, so browsers show no bullets or numbers. Treat those
+   paragraphs as list items; this also fixes the numbered lists in the
+   Syntax and FunZero indexes. */
+.code-content > :is(.md-text.mod-doc, .verso-text.mod-doc) :is(ul, ol) > p,
+.code-content .code-box :is(.md-text, .verso-text) :is(ul, ol) > p {
+  display: list-item;
+  margin-bottom: .3em;
+}
