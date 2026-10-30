@@ -4,6 +4,8 @@ import PlTheories.FunZero
 /-!
 # Programming Language Theories
 
+![Woven triangular knot surrounded by logic symbols](images/pl_theories_knot.jpg)
+
 How do we describe a programming language, build an implementation, and
 prove that the implementation follows the description? This series explores
 those questions by developing a small language in Lean.

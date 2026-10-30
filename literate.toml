@@ -27,6 +27,7 @@ library = "PlTheories"
 [metadata]
 title = "Programming Language Theories"
 description = "Building a small programming language in Lean, from specifications to implementations and proofs."
+favicon = "images/favicon.svg"
 
 [modules."PlTheories"]
 title = "Programming Language Theories"

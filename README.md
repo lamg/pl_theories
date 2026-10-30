@@ -4,6 +4,10 @@
 [![License][License Shield]][License File]
 [![CI][CI Shield]][CI Actions]
 
+<p align="center">
+  <img src="images/pl_theories_knot.jpg" width="340" alt="Woven triangular knot surrounded by logic symbols">
+</p>
+
 Small ML-like language being specified and implemented in Lean, with focus on theories for:
 
 - [ ] syntax parsing

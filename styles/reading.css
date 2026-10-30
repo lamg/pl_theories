@@ -232,6 +232,14 @@
   text-underline-offset: .18em;
 }
 .code-content > :is(.md-text.mod-doc, .verso-text.mod-doc) code { font-size: .83em; }
+/* Centre prose images (the home-page knot) and keep them compact. */
+.code-content :is(.md-text, .verso-text) img {
+  display: block;
+  margin-inline: auto;
+  width: 100%;
+  max-width: 340px;
+  height: auto;
+}
 .code-box {
   padding: 1.25rem 1.4rem;
   margin-bottom: 2.25rem;
