@@ -18,6 +18,11 @@ title = "Programming Language Theories"
 
 [modules."PlTheories.FunZero.Syntax.Parsing"]
 title = "Parser specifications"
+# Replaces the global list for this module, so repeat it. `set_option`
+# hides the `all_digits`/`all_alpha` block in `Parsing.lean`, whose
+# definitions are wrapped in `set_option pp.all false in`. Matching is
+# on leading keywords, so no comment may precede those wrappers.
+hide_commands = ["import", "open", "set_option"]
 
 [modules."PlTheories.FunZero"]
 title = "A small functional language"
