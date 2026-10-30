@@ -1,4 +1,4 @@
-import PlTheories.Parsing
+import PlTheories.FunZero.Syntax.Parsing
 
 namespace RecursiveDescent
 
@@ -27,7 +27,7 @@ example: tk "let" ["bla", "x"] = .error (.unexpectedToken "let" "bla") := rfl
 example: tk "let" [] = .error (.unexpectedEnd "let") := rfl
 
 theorem tk_spec_ok (input rest : List String) (s : String) :
-  tk s input = .ok (s, rest) ↔ Parsing.tk s input s rest
+  tk s input = .ok (s, rest) ↔ Syntax.Parsing.tk s input s rest
 := by
   constructor
   · intro h
@@ -38,7 +38,7 @@ theorem tk_spec_ok (input rest : List String) (s : String) :
       · simp [tk, hy] at h
         cases h
         subst hy
-        simp [Parsing.tk]
+        simp [Syntax.Parsing.tk]
       · simp [tk, hy] at h
   · intro h
     cases input with
@@ -54,30 +54,30 @@ def any : RdParser String :=
   | x :: xs => .ok (x, xs)
 
 theorem any_spec_ok (rest: List String) (hd: String):
-  any (hd :: rest) = .ok (hd, rest) ↔ Parsing.any (hd :: rest) hd rest
+  any (hd :: rest) = .ok (hd, rest) ↔ Syntax.Parsing.any (hd :: rest) hd rest
 := by simp [any]
 
 def pure (x: α): RdParser α :=
   fun input => .ok (x, input)
 
 theorem pure_spec_ok (x: α) (input: List String) (r: α) (rest: List String):
-  pure x input = .ok (r, rest) ↔ Parsing.pure x input r rest
+  pure x input = .ok (r, rest) ↔ Syntax.Parsing.pure x input r rest
 := by
   constructor
   · intro h
-    simp [Parsing.pure]
+    simp [Syntax.Parsing.pure]
     simp [pure] at h
     exact (And.intro h.1.symm h.2.symm)
   · intro h
     simp [pure]
-    simp [Parsing.pure] at h
+    simp [Syntax.Parsing.pure] at h
     exact ⟨h.1.symm, h.2.symm⟩
 
 def fail : RdParser α :=
   fun _input => .error .alwaysFails
 
 theorem fail_spec_ok (input rest: List String) (result: α):
-  fail input = .ok (result, rest) ↔ Parsing.fail input result rest
+  fail input = .ok (result, rest) ↔ Syntax.Parsing.fail input result rest
 := by
   simp [fail]
 
@@ -93,15 +93,15 @@ def choice (p q: RdParser α): RdParser α :=
 
 -- FollowsSpec defines the correspondence between parser
 -- implementation and specification
-def FollowsSpec (impl: RdParser α) (spec: Parsing.Parser α) : Prop :=
+def FollowsSpec (impl: RdParser α) (spec: Syntax.Parsing.Parser α) : Prop :=
   ∀ input result rest,
     impl input = .ok (result, rest) ↔ spec input result rest
 
-example (x : α) : FollowsSpec (pure x) (Parsing.pure x) :=
+example (x : α) : FollowsSpec (pure x) (Syntax.Parsing.pure x) :=
   pure_spec_ok x
 
 theorem first_choice_spec_ok (hp: FollowsSpec p P) (hq: FollowsSpec q Q):
-  FollowsSpec (choice p q) (Parsing.first_choice P Q)
+  FollowsSpec (choice p q) (Syntax.Parsing.first_choice P Q)
 := by
   intro input result rest
   constructor
@@ -110,7 +110,7 @@ theorem first_choice_spec_ok (hp: FollowsSpec p P) (hq: FollowsSpec q Q):
     | ok res =>
       simp
       intro res_fst res_snd
-      simp [Parsing.first_choice]
+      simp [Syntax.Parsing.first_choice]
       left
       rw [<-hp, hip, <-res_fst, <-res_snd]
     | error e =>
@@ -119,7 +119,7 @@ theorem first_choice_spec_ok (hp: FollowsSpec p P) (hq: FollowsSpec q Q):
       | ok res =>
         simp
         intro res_fst res_snd
-        simp [Parsing.first_choice]
+        simp [Syntax.Parsing.first_choice]
         right
         constructor
         · intro x x_1
@@ -132,12 +132,12 @@ theorem first_choice_spec_ok (hp: FollowsSpec p P) (hq: FollowsSpec q Q):
     cases hip: p input with
     | ok res =>
       simp
-      simpa [Parsing.first_choice, ← hp input, hip, Prod.ext_iff] using h_fst_choice
+      simpa [Syntax.Parsing.first_choice, ← hp input, hip, Prod.ext_iff] using h_fst_choice
     | error e =>
       simp
       cases hiq : q input with
-      | ok res => simp; simpa [Parsing.first_choice, ← hp input, ← hq input, hip, hiq, Prod.ext_iff] using h_fst_choice
-      | error e => simp [Parsing.first_choice, ← hp input, ← hq input, hip, hiq] at h_fst_choice
+      | ok res => simp; simpa [Syntax.Parsing.first_choice, ← hp input, ← hq input, hip, hiq, Prod.ext_iff] using h_fst_choice
+      | error e => simp [Syntax.Parsing.first_choice, ← hp input, ← hq input, hip, hiq] at h_fst_choice
 
 def seq (p: RdParser α) (q: RdParser β): RdParser (α × β) :=
   fun input =>
@@ -151,7 +151,7 @@ def seq (p: RdParser α) (q: RdParser β): RdParser (α × β) :=
 
 theorem seq_spec_ok (hp: FollowsSpec p P) (hq: FollowsSpec q Q):
   ∀ input r rest,
-    seq p q input = .ok (r, rest) ↔ Parsing.seq P Q input r rest
+    seq p q input = .ok (r, rest) ↔ Syntax.Parsing.seq P Q input r rest
 := by
   intro input (pr, pq) rest
   constructor
@@ -197,10 +197,10 @@ example: many (pure 1) [] = .error .noProgress
 example: many (choice (tk "a") (pure "fallback")) ["a"] = .error .noProgress
 := by simp [many, choice, tk, pure]
 
--- The implementation is greedy; Parsing.many also allows stopping early.
+-- The implementation is greedy; Syntax.Parsing.many also allows stopping early.
 theorem many_spec_ok (hp: FollowsSpec p P):
   ∀ input xs rest,
-    many p input = .ok (xs, rest) → Parsing.many P input xs rest
+    many p input = .ok (xs, rest) → Syntax.Parsing.many P input xs rest
 := by
   intro input xs rest
   induction xs generalizing input with
@@ -237,26 +237,26 @@ theorem many_spec_ok (hp: FollowsSpec p P):
 
 
 -- General forms for use as premises of the combinator correctness theorems.
-theorem tk_follows_spec (s: String): FollowsSpec (tk s) (Parsing.tk s) := by
+theorem tk_follows_spec (s: String): FollowsSpec (tk s) (Syntax.Parsing.tk s) := by
   intro input result rest
   cases input with
-  | nil => simp [tk, Parsing.tk]
+  | nil => simp [tk, Syntax.Parsing.tk]
   | cons x xs =>
     by_cases h : x = s
     · subst x
-      simp [tk, Parsing.tk, eq_comm, and_comm]
-    · simp [tk, Parsing.tk, h]
+      simp [tk, Syntax.Parsing.tk, eq_comm, and_comm]
+    · simp [tk, Syntax.Parsing.tk, h]
 
-theorem any_follows_spec: FollowsSpec any Parsing.any := by
+theorem any_follows_spec: FollowsSpec any Syntax.Parsing.any := by
   intro input result rest
   cases input with
-  | nil => simp [any, Parsing.any]
-  | cons x xs => simp [any, Parsing.any]
+  | nil => simp [any, Syntax.Parsing.any]
+  | cons x xs => simp [any, Syntax.Parsing.any]
 
 -- Deterministic choice is sound for the nondeterministic specification.
 theorem choice_spec_ok (hp: FollowsSpec p P) (hq: FollowsSpec q Q):
   ∀ input result rest,
-    choice p q input = .ok (result, rest) → Parsing.choice P Q input result rest
+    choice p q input = .ok (result, rest) → Syntax.Parsing.choice P Q input result rest
 := by
   intro input result rest h
   rcases (first_choice_spec_ok hp hq input result rest).mp h with hP | ⟨_, hQ⟩
@@ -270,14 +270,14 @@ def map (f: α → β) (p: RdParser α): RdParser β :=
     | .error e => .error e
 
 theorem map_spec_ok (f: α → β) (hp: FollowsSpec p P):
-  FollowsSpec (map f p) (Parsing.map f P)
+  FollowsSpec (map f p) (Syntax.Parsing.map f P)
 := by
   intro input result rest
   cases h: p input with
-  | error e => simp [map, Parsing.map, ← hp input, h]
+  | error e => simp [map, Syntax.Parsing.map, ← hp input, h]
   | ok r =>
     rcases r with ⟨x, remaining⟩
-    simp only [map, h, Except.ok.injEq, Prod.mk.injEq, Parsing.map, ← hp input]
+    simp only [map, h, Except.ok.injEq, Prod.mk.injEq, Syntax.Parsing.map, ← hp input]
     constructor
     · intro ⟨hf, hr⟩
       exact ⟨x, ⟨rfl, hr⟩, hf⟩
@@ -292,39 +292,39 @@ def guardp (f: α → Bool) (p: RdParser α): RdParser α :=
     | .error e => .error e
 
 theorem guardp_spec_ok (f: α → Bool) (hp: FollowsSpec p P):
-  FollowsSpec (guardp f p) (Parsing.guardp f P)
+  FollowsSpec (guardp f p) (Syntax.Parsing.guardp f P)
 := by
   intro input result rest
   cases h: p input with
-  | error e => simp [guardp, Parsing.guardp, ← hp input, h]
+  | error e => simp [guardp, Syntax.Parsing.guardp, ← hp input, h]
   | ok r =>
     rcases r with ⟨x, remaining⟩
     by_cases hf : f x = true
-    · simp [guardp, Parsing.guardp, ← hp input, h, hf]
+    · simp [guardp, Syntax.Parsing.guardp, ← hp input, h, hf]
       intro hx _
       simpa [← hx] using hf
-    · simp [guardp, Parsing.guardp, ← hp input, h, hf]
+    · simp [guardp, Syntax.Parsing.guardp, ← hp input, h, hf]
       intro _ hx _
       subst result
       contradiction
 
-def all_digits := Parsing.all_digits
-def all_alpha := Parsing.all_alpha
+def all_digits := Syntax.Parsing.all_digits
+def all_alpha := Syntax.Parsing.all_alpha
 
 def digits := guardp all_digits any
 def alpha := guardp all_alpha any
 
-theorem digits_spec_ok: FollowsSpec digits Parsing.digits :=
+theorem digits_spec_ok: FollowsSpec digits Syntax.Parsing.digits :=
   guardp_spec_ok all_digits any_follows_spec
 
-theorem alpha_spec_ok: FollowsSpec alpha Parsing.alpha :=
+theorem alpha_spec_ok: FollowsSpec alpha Syntax.Parsing.alpha :=
   guardp_spec_ok all_alpha any_follows_spec
 
 def left (p: RdParser α) (q: RdParser β): RdParser α :=
   map Prod.fst (seq p q)
 
 theorem left_spec_ok (hp: FollowsSpec p P) (hq: FollowsSpec q Q):
-  FollowsSpec (left p q) (Parsing.left P Q)
+  FollowsSpec (left p q) (Syntax.Parsing.left P Q)
 := by
   intro input result rest
   rw [left, map_spec_ok Prod.fst (seq_spec_ok hp hq)]
@@ -340,7 +340,7 @@ def right (p: RdParser α) (q: RdParser β): RdParser β :=
   map Prod.snd (seq p q)
 
 theorem right_spec_ok (hp: FollowsSpec p P) (hq: FollowsSpec q Q):
-  FollowsSpec (right p q) (Parsing.right P Q)
+  FollowsSpec (right p q) (Syntax.Parsing.right P Q)
 := by
   intro input result rest
   rw [right, map_spec_ok Prod.snd (seq_spec_ok hp hq)]
@@ -354,21 +354,21 @@ theorem right_spec_ok (hp: FollowsSpec p P) (hq: FollowsSpec q Q):
 
 example: map String.length (tk "abcd") ["abcd", "rest"] = .ok (4, ["rest"]) := rfl
 example: digits ["33", "bla"] = .ok ("33", ["bla"]) := by
-  simp [digits, guardp, any, all_digits, Parsing.all_digits]
+  simp [digits, guardp, any, all_digits, Syntax.Parsing.all_digits]
 example: digits ["bla"] = .error .guardFailed := by
-  simp [digits, guardp, any, all_digits, Parsing.all_digits]
+  simp [digits, guardp, any, all_digits, Syntax.Parsing.all_digits]
 example: alpha ["abc", "12"] = .ok ("abc", ["12"]) := by
-  simp [alpha, guardp, any, all_alpha, Parsing.all_alpha]
+  simp [alpha, guardp, any, all_alpha, Syntax.Parsing.all_alpha]
 example: left digits alpha ["12", "bla"] = .ok ("12", []) := by
   simp [left, map, seq, digits, alpha, guardp, any, all_digits, all_alpha,
-    Parsing.all_digits, Parsing.all_alpha]
+    Syntax.Parsing.all_digits, Syntax.Parsing.all_alpha]
 example: right digits alpha ["12", "bla"] = .ok ("bla", []) := by
   simp [right, map, seq, digits, alpha, guardp, any, all_digits, all_alpha,
-    Parsing.all_digits, Parsing.all_alpha]
+    Syntax.Parsing.all_digits, Syntax.Parsing.all_alpha]
 example: left digits alpha ["12", "34"] = .error .guardFailed := by
   simp [left, map, seq, digits, alpha, guardp, any, all_digits, all_alpha,
-    Parsing.all_digits, Parsing.all_alpha]
+    Syntax.Parsing.all_digits, Syntax.Parsing.all_alpha]
 example: right digits alpha ["bad", "abc"] = .error .guardFailed := by
-  simp [right, map, seq, digits, guardp, any, all_digits, Parsing.all_digits]
+  simp [right, map, seq, digits, guardp, any, all_digits, Syntax.Parsing.all_digits]
 
 end RecursiveDescent

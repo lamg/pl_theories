@@ -10,13 +10,18 @@ its development from syntax to declarative typing rules.
 
 The **Syntax** section describes the language and how its programs are read:
 
-1. **Language syntax** describes expressions and the token sequences that represent them.
-2. **Recursive descent** implements the parser combinators and proves their correctness.
+1. **Parsing** encodes the behavior of parsers as relations, which are then
+used to prove parser implementation's correctness.
+2. **Language syntax** describes expressions and the token sequences that
+represent them.
+3. **Recursive descent** implements the parser combinators and proves their
+correctness.
 
 The **Typechecking** section explains which types expressions may have:
 
 1. **Basic concepts** introduces types, schemes, and typing contexts.
-2. **Unification** explains substitutions and what it means to make two types agree.
+2. **Unification** explains substitutions and what it means to make
+two types agree.
 3. **Algorithm W** states the typing rules and the contract for inference.
 
 The series is a work in progress. The inference contract is a specification;

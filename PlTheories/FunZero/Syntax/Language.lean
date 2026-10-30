@@ -1,5 +1,5 @@
-import PlTheories.Parsing
-open Parsing
+import PlTheories.FunZero.Syntax.Parsing
+open Syntax.Parsing
 
 namespace Syntax
 

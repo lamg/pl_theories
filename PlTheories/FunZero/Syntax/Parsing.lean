@@ -1,5 +1,14 @@
-namespace Parsing
+namespace Syntax.Parsing
 
+/-!
+## Parser
+
+_Parser_ defines the signature of a relation between an input tokens,
+a result value, and the remaining tokens after parsing that value. Those
+relations are not meant to implement parsing, just to declare the behavior
+of parsers to then prove the correctness of any implementation.
+
+-/
 abbrev Parser (α: Type) := List String → α → List String → Prop
 
 @[reducible]
@@ -138,4 +147,4 @@ infixl:60 " *> " => right
 example: (digits *> alpha) ["12", "bla"] "bla" [] := by
   simp [right, digits, guardp, alpha, all_digits, all_alpha]
 
-end Parsing
+end Syntax.Parsing

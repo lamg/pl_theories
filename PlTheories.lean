@@ -1,4 +1,4 @@
-import PlTheories.Parsing
+import PlTheories.FunZero.Syntax.Parsing
 import PlTheories.FunZero
 
 /-!

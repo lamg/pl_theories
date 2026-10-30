@@ -2,7 +2,7 @@ extra_css = ["styles/reading.css"]
 extra_js = ["styles/const-kinds.js"]
 landing_page = "PlTheories"
 # Reading order for every level of the index, as full module names.
-order = ["PlTheories.Parsing", "PlTheories.FunZero", "PlTheories.FunZero.Syntax", "PlTheories.FunZero.Typechecking", "PlTheories.FunZero.Syntax.Language", "PlTheories.FunZero.Syntax.RecursiveDescent", "PlTheories.FunZero.Typechecking.BasicConcepts", "PlTheories.FunZero.Typechecking.Unification", "PlTheories.FunZero.Typechecking.AlgorithmW"]
+order = ["PlTheories.FunZero", "PlTheories.FunZero.Syntax", "PlTheories.FunZero.Typechecking", "PlTheories.FunZero.Syntax.Parsing", "PlTheories.FunZero.Syntax.Language", "PlTheories.FunZero.Syntax.RecursiveDescent", "PlTheories.FunZero.Typechecking.BasicConcepts", "PlTheories.FunZero.Typechecking.Unification", "PlTheories.FunZero.Typechecking.AlgorithmW"]
 docstrings_as_text = true
 hide_commands = ["import", "open"]
 
@@ -16,7 +16,7 @@ description = "Building a small programming language in Lean, from specification
 [modules."PlTheories"]
 title = "Programming Language Theories"
 
-[modules."PlTheories.Parsing"]
+[modules."PlTheories.FunZero.Syntax.Parsing"]
 title = "Parser specifications"
 
 [modules."PlTheories.FunZero"]
