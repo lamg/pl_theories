@@ -25,6 +25,16 @@ then Algorithm W. Executable type inference is still under development.
 
 ## Build and preview
 
+With Nix, enter the development environment (Lean toolchain pinned by
+`lean-toolchain`, plus `git` and `python3`):
+
+```sh
+nix develop   # or `direnv allow` once, for automatic activation
+lake build PlTheories
+```
+
+Without Nix, install Lean via elan so `lean-toolchain` selects v4.35.0, then:
+
 ```sh
 lake build PlTheories
 lake query :literateHtml
